@@ -48,26 +48,26 @@ const options = {
     }
 }
 
-function Graph({ caseType = 'cases'}) {
-
-    const [data, setData] = useState({});
-
-    const buildChartData = ( data, caseType='cases') => {
+const buildChartData = ( data, caseType='cases') => {
         let chartData = [];
         let lastDataPoint;
 
         for (let date in data.cases) {
             if(lastDataPoint) {
-                const newDataPoint = {
+                let newDataPoint = {
                     x: date,
                     y: data[caseType][date] - lastDataPoint
-                }
+                };
                 chartData.push(newDataPoint);
             }
             lastDataPoint = data[caseType][date];
         }
         return chartData;
     }
+
+
+function Graph({ caseType }) {
+    const [data, setData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {

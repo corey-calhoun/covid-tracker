@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { sortData} from './util';
+import { sortData, prettyPrintStat } from './util';
+import numeral from 'numeral'
 
 // Components
 import { Card, CardContent, FormControl, MenuItem, Select } from '@material-ui/core';
@@ -16,7 +17,9 @@ function App() {
   const [ countries, setCountries ] = useState([]);
   const [ country, setCountry ] = useState("worldwide");
   const [ countryInfo, setCountryInfo ] = useState({});
+  
   const [ tableData, setTableData ] = useState([]);
+  const [ caseType, setCaseType ] = useState('cases');
 
   //set inial worldwide stats
   useEffect(() => {
@@ -33,15 +36,13 @@ function App() {
       await fetch ("https://disease.sh/v3/covid-19/countries")
       .then((response) => response.json())
       .then((data) => {
-
         const countries = data.map((country) => (
           {
             name: country.country,
             value: country.countryInfo.iso2 
           }
         ));
-
-        const sortedData = sortData(data);
+        let sortedData = sortData(data);
         setTableData(sortedData);
         setCountries(countries);
       });
@@ -50,16 +51,20 @@ function App() {
     getCountriesData();
   }, []);
 
+  console.table(caseType);
+
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
 
-    const url = countryCode === 'worldwide' ? 'https://disease.sh/v3/covid-19/countries' : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-
+    const url = countryCode === 'worldwide' 
+      ? 'https://disease.sh/v3/covid-19/countries' 
+      : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
     await fetch(url)
-     .then(response => response.json())
-     .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
+        
      })
   }
 
@@ -75,7 +80,7 @@ function App() {
               value={country}
               onChange={onCountryChange}
             >
-              <MenuItem value="worldwide">{country}</MenuItem>
+              <MenuItem value="worldwide">Worldwide</MenuItem>
               {
                 countries.map((country) => (
                   <MenuItem value={country.value}>{country.name}</MenuItem>
@@ -86,9 +91,29 @@ function App() {
         </div>
         
         <div className="app__stats">
-              <InfoBox title="Total Cases" cases={countryInfo.todayCases} total={countryInfo.cases}/>
-              <InfoBox title="Total Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}/>
-              <InfoBox title="Total Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}/>
+              <InfoBox 
+               title="Total Cases" 
+               isRed
+               active={caseType === 'cases'}
+               cases={countryInfo.todayCases} 
+               total={numeral(countryInfo.cases).format("0.0a")}
+               onClick={(e) => setCaseType("cases")}
+              />
+              <InfoBox 
+               title="Total Recovered" 
+               active={caseType === 'recovered'}
+               cases={prettyPrintStat(countryInfo.todayRecovered)} 
+               total={numeral(countryInfo.recovered).format("0.0a")}
+               onClick={(e) => setCaseType("recovered")}
+              />
+              <InfoBox 
+               title="Total Deaths" 
+               isRed
+               active={caseType === 'deaths'}
+               cases={prettyPrintStat(countryInfo.todayDeaths)} 
+               total={numeral(countryInfo.deaths).format("0.0a")}
+               onClick={(e) => setCaseType("deaths")}
+              />
         </div>
         <div className="app__map">
           <Map />
@@ -99,8 +124,8 @@ function App() {
         <CardContent className="app__table">
           <h3 className="app__table">Live Cases by Country</h3>
           <Table countries={tableData}/>
-          <h3 className="app__graph">Worldwide New Cases</h3>
-          <Graph />
+          <h3 className="app__graph">Worldwide new {caseType}</h3>
+          <Graph caseType={caseType}/>
         </CardContent>
       </Card>
       

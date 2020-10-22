@@ -1,0 +1,19 @@
+-------------------- Auto-Git Log --------------------
+		Thu Oct 22 2020 12:25:37 GMT-0500 (Central Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* src/App.js
+* src/Graph/Graph.css
+* src/Graph/Graph.js
+* src/index.js
+
+
+Created files:
+* .autogit/logs/log-22-9-2020-11-55-28.txt
+
+
+Deleted files:
+
+
+Renamed files:
