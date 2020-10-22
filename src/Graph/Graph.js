@@ -48,7 +48,7 @@ const options = {
     }
 }
 
-export default function Graph() {
+function Graph({ caseType = 'cases'}) {
 
     const [data, setData] = useState({});
 
@@ -72,17 +72,18 @@ export default function Graph() {
     useEffect(() => {
         const fetchData = async () => {
            await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
-            .then((response) => response.json())
+            .then((response) => {response.json();
+            })
             .then((data) => {
                 let chartData = buildChartData(data, "cases");
-                console.table(data);
-
                 setData(chartData);
+
+                console.table(data);
             });
-        }
+        };
         
         fetchData();
-    }, []);    
+    }, [caseType]);    
 
     return (
         <div className="graph">
@@ -104,3 +105,5 @@ export default function Graph() {
         </div>
     )
 }
+
+export default Graph;

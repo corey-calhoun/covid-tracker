@@ -8,6 +8,7 @@ import { Card, CardContent, FormControl, MenuItem, Select } from '@material-ui/c
 import InfoBox from './InfoBox/InfoBox';
 import Map from './Map/Map'
 import Table from './Table/Table'
+import Graph from './Graph/Graph';
 
 
 function App() {
@@ -95,11 +96,11 @@ function App() {
       </div>
 
       <Card className="app__right">
-        <CardContent>
+        <CardContent className="app__table">
           <h3 className="app__table">Live Cases by Country</h3>
           <Table countries={tableData}/>
           <h3 className="app__graph">Worldwide New Cases</h3>
-          {/* Graph */}
+          <Graph />
         </CardContent>
       </Card>
       
