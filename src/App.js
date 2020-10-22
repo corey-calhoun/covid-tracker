@@ -45,6 +45,7 @@ function App() {
           }));
           let sortedData = sortData(data);
           setCountries(countries);
+          setMapCountries(data);
           setTableData(sortedData);
       });
     };
@@ -118,7 +119,12 @@ function App() {
               />
         </div>
         <div className="app__map">
-          <Map />
+          <Map 
+           countries={mapCountries}
+           casesType={caseType}
+           center={mapCenter}
+           zoom={mapZoom}
+          />
         </div>
       </div>
 
