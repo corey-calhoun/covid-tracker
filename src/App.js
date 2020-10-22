@@ -22,7 +22,7 @@ function App() {
   const [ caseType, setCaseType ] = useState('cases');
   const [ mapCountries, setMapCountries ] = useState([]);
   const [ mapCenter, setMapCenter ] = useState({ lat: 34.80746, lng: -40.4796 });
-  const [ mapZoom, setMapZoom] = useState(3);
+  const [ mapZoom, setMapZoom] = useState(2);
 
   //set inial worldwide stats
   useEffect(() => {
@@ -67,7 +67,7 @@ function App() {
         setCountry(countryCode);
         setCountryInfo(data);
         setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        setMapZoom(3); 
+        setMapZoom(2); 
      });
   };
 
