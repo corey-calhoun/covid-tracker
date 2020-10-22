@@ -1,0 +1,29 @@
+-------------------- Auto-Git Log --------------------
+		Thu Oct 22 2020 04:25:09 GMT-0500 (Central Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* package-lock.json
+* package.json
+* src/App.css
+* src/App.js
+
+
+Created files:
+* .autogit/autogit.json
+* src/Graph/Graph.css
+* src/Graph/Graph.js
+* src/InfoBox/InfoBox.css
+* src/InfoBox/InfoBox.js
+* src/Map/Map.css
+* src/Map/Map.js
+* src/Table/Table.css
+* src/Table/Table.js
+* src/util.js
+
+
+Deleted files:
+* src/logo.svg
+
+
+Renamed files:
