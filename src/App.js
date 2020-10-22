@@ -18,34 +18,34 @@ function App() {
   const [ countries, setCountries ] = useState([]);
   const [ country, setCountry ] = useState("worldwide");
   const [ countryInfo, setCountryInfo ] = useState({});
-  
   const [ tableData, setTableData ] = useState([]);
   const [ caseType, setCaseType ] = useState('cases');
+  const [ mapCountries, setMapCountries ] = useState([]);
+  const [ mapCenter, setMapCenter ] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [ mapZoom, setMapZoom] = useState(3);
 
   //set inial worldwide stats
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
     .then(response => response.json())
-  .then(data => {
-    setCountryInfo(data);
-  })    
-  }, [])
+    .then(data => {
+      setCountryInfo(data);
+    }) ;   
+  }, []);
 
   //set individual stats
   useEffect(() => {
     const getCountriesData = async () => {
-      await fetch ("https://disease.sh/v3/covid-19/countries")
-      .then((response) => response.json())
-      .then((data) => {
-        const countries = data.map((country) => (
-          {
-            name: country.country,
-            value: country.countryInfo.iso2 
-          }
-        ));
-        let sortedData = sortData(data);
-        setTableData(sortedData);
-        setCountries(countries);
+      fetch ("https://disease.sh/v3/covid-19/countries")
+        .then((response) => response.json())
+        .then((data) => {
+          const countries = data.map((country) => ({
+              name: country.country,
+              value: country.countryInfo.iso2 
+          }));
+          let sortedData = sortData(data);
+          setCountries(countries);
+          setTableData(sortedData);
       });
     };
 
@@ -65,9 +65,10 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-
-     })
-  }
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(3); 
+     });
+  };
 
 
   return (
