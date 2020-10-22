@@ -64,7 +64,7 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-        
+
      })
   }
 
@@ -92,7 +92,7 @@ function App() {
         
         <div className="app__stats">
               <InfoBox 
-               title="Total Cases" 
+               title="Coronavirus Cases" 
                isRed
                active={caseType === 'cases'}
                cases={countryInfo.todayCases} 
@@ -100,14 +100,14 @@ function App() {
                onClick={(e) => setCaseType("cases")}
               />
               <InfoBox 
-               title="Total Recovered" 
+               title="Recovered" 
                active={caseType === 'recovered'}
                cases={prettyPrintStat(countryInfo.todayRecovered)} 
                total={numeral(countryInfo.recovered).format("0.0a")}
                onClick={(e) => setCaseType("recovered")}
               />
               <InfoBox 
-               title="Total Deaths" 
+               title="Deaths" 
                isRed
                active={caseType === 'deaths'}
                cases={prettyPrintStat(countryInfo.todayDeaths)} 

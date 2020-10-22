@@ -48,62 +48,60 @@ const options = {
     }
 }
 
-const buildChartData = ( data, caseType='cases') => {
-        let chartData = [];
-        let lastDataPoint;
-
-        for (let date in data.cases) {
-            if(lastDataPoint) {
-                let newDataPoint = {
-                    x: date,
-                    y: data[caseType][date] - lastDataPoint
-                };
-                chartData.push(newDataPoint);
-            }
-            lastDataPoint = data[caseType][date];
-        }
-        return chartData;
+const buildChartData = (data, caseType) => {
+  let chartData = [];
+  let lastDataPoint;
+  for (let date in data.cases) {
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data[caseType][date] - lastDataPoint,
+      };
+      chartData.push(newDataPoint);
     }
+    lastDataPoint = data[caseType][date];
+  }
+  return chartData;
+};
 
+function LineGraph({ caseType }) {
+  const [data, setData] = useState({});
 
-function Graph({ caseType }) {
-    const [data, setData] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let chartData = buildChartData(data, caseType);
+          setData(chartData);
+          console.log(chartData);
+          // buildChart(chartData);
+        });
+    };
 
-    useEffect(() => {
-        const fetchData = async () => {
-           await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
-            .then((response) => {response.json();
-            })
-            .then((data) => {
-                let chartData = buildChartData(data, "cases");
-                setData(chartData);
+    fetchData();
+  }, [caseType]);
 
-                console.table(data);
-            });
-        };
-        
-        fetchData();
-    }, [caseType]);    
-
-    return (
-        <div className="graph">
-            {data?.length > 0 && (
-                <Line 
-                 options={options}
-                 data={{
-                    datasets: [
-                        {
-                            backgroundColor: "rgba(204, 16, 52, 0.6)",
-                            borderColor: "#CC1034",
-                            data: data,
-                        },
-                    ],
-                  }}
-                />   
-            )}
-            
-        </div>
-    )
+  return (
+    <div>
+      {data?.length > 0 && (
+        <Line
+          data={{
+            datasets: [
+              {
+                backgroundColor: "rgba(204, 16, 52, 0.5)",
+                borderColor: "#CC1034",
+                data: data,
+              },
+            ],
+          }}
+          options={options}
+        />
+      )}
+    </div>
+  );
 }
 
-export default Graph;
+export default LineGraph;
