@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { sortData, prettyPrintStat } from './util';
 import numeral from 'numeral'
+import 'leaflet/dist/leaflet.css'
 
 // Components
 import { Card, CardContent, FormControl, MenuItem, Select } from '@material-ui/core';
